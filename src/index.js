@@ -152,10 +152,14 @@ function createLoadableComponent(loadFn, options) {
     componentWillMount() {
       this._mounted = true;
 
-      if (this.context.loadable && Array.isArray(opts.modules)) {
-        opts.modules.forEach(moduleName => {
-          this.context.loadable.report(moduleName);
-        });
+      if (this.context.loadable) {
+        this.context.loadable.report({ loader: res.promise });
+
+        if (Array.isArray(opts.modules)) {
+          opts.modules.forEach(moduleName => {
+            this.context.loadable.report({ module: moduleName });
+          });
+        }
       }
 
       if (!res.loading) {
